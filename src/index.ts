@@ -14,8 +14,6 @@ const main = async () => {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		});
-
-		await orm.em.persistAndFlush(post);
 	} catch (error) {
 		console.log(error);
 	}
