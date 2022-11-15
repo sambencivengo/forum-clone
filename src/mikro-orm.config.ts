@@ -1,7 +1,7 @@
 import { __prod__ } from './constants';
 import { Post } from './entitites/Post';
 
-export default {
+const export default {
 	dbName: 'full-typescript-project',
 	entities: [Post],
 	debug: !__prod__,
