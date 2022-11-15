@@ -6,10 +6,11 @@ import mikroOrmConfig from './mikro-orm.config';
 const main = async () => {
 	try {
 		const orm = await MikroORM.init(mikroOrmConfig);
+		await orm.getMigrator().up(); //Runs the migrations before it does anything
 
 		const ormFork = orm.em.fork();
 		const post = ormFork.create(Post, {
-			title: 'first post',
+			title: 'first posts',
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		});
