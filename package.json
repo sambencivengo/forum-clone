@@ -1,5 +1,5 @@
 {
-	"name": "full-typescript-project",
+	"name": "forum-clone",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -12,12 +12,12 @@
 		"watch": "tsc -w"
 	},
 	"mikro-orm": {
-    "useTsNode": true,
-    "configPaths": [
-      "./src/mikro-orm.config.ts",
-      "./dist/mikro-orm.config.js"
-    ]
-  },
+		"useTsNode": true,
+		"configPaths": [
+			"./src/mikro-orm.config.ts",
+			"./dist/mikro-orm.config.js"
+		]
+	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
