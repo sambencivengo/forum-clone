@@ -1,10 +1,11 @@
+import { MikroORM } from '@mikro-orm/postgresql';
 import { __prod__ } from './constants';
-import { Post } from './entitites/Post';
+import { Post } from './entities/Post';
 
-const export default {
+export default {
 	dbName: 'full-typescript-project',
 	entities: [Post],
 	debug: !__prod__,
 	type: 'postgresql',
 	allowGlobalContext: true,
-};
+} as Parameters<typeof MikroORM.init>[0];
