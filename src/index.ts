@@ -11,7 +11,7 @@ const PORT = 8000;
 const main = async () => {
 	try {
 		const orm = await MikroORM.init(mikroOrmConfig);
-		await orm.getMigrator().up(); // Runs the migrations before it does anything
+		// await orm.getMigrator().up(); // Runs the migrations before it does anything
 
 		const app = express();
 
