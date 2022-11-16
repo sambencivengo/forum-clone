@@ -76,7 +76,6 @@ export class UserResolver {
 			await em.persistAndFlush(user);
 		} catch (error) {
 			if (error.code === '23505') {
-				// dupe username error
 				return {
 					errors: [
 						{
