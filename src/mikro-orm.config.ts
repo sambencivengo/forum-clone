@@ -2,6 +2,7 @@ import { MikroORM } from '@mikro-orm/postgresql';
 import path from 'path';
 import { __prod__ } from './constants';
 import { User, Post } from './entities';
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 
 export default {
 	migrations: {
@@ -12,5 +13,6 @@ export default {
 	entities: [Post, User], // Any new entities must be added here
 	debug: !__prod__,
 	type: 'postgresql',
+	highlighter: new SqlHighlighter(),
 	allowGlobalContext: true,
 } as Parameters<typeof MikroORM.init>[0];
