@@ -21,7 +21,10 @@ export class UserResolver {
 		const { password, username } = options;
 		const hashedPassword = await argon2.hash(password); // Argon2 hashed password
 
-		const user = em.create(User, { username, password: hashedPassword });
+		const user = em.create(User, {
+			username: username.toLowerCase(),
+			password: hashedPassword,
+		});
 		await em.persistAndFlush(user);
 
 		return user;
