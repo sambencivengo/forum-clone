@@ -1,7 +1,7 @@
 import { MikroORM } from '@mikro-orm/postgresql';
 import path from 'path';
 import { __prod__ } from './constants';
-import { Post } from './entities/Post';
+import { User, Post } from './entities';
 
 export default {
 	migrations: {
@@ -9,7 +9,7 @@ export default {
 		glob: '!(*.d).{js,ts}', // how to match migration files (all .js and .ts files, but not .d.ts)
 	},
 	dbName: 'forum-clone',
-	entities: [Post],
+	entities: [Post, User], // Any new entities must be added here
 	debug: !__prod__,
 	type: 'postgresql',
 	allowGlobalContext: true,
