@@ -45,22 +45,22 @@ export class UserResolver {
 	): Promise<UserResponse> {
 		const { password, username } = options;
 
-		if (username.length <= 5) {
+		if (username.length <= 4) {
 			return {
 				errors: [
 					{
 						field: 'username',
-						message: 'username length must be greater than 5',
+						message: 'username length must be greater than 4',
 					},
 				],
 			};
 		}
-		if (password.length <= 5) {
+		if (password.length <= 4) {
 			return {
 				errors: [
 					{
 						field: 'password',
-						message: 'password length must be greater than 5',
+						message: 'password length must be greater than 4',
 					},
 				],
 			};
@@ -72,7 +72,22 @@ export class UserResolver {
 			username: username.toLowerCase(),
 			password: hashedPassword,
 		});
-		await em.persistAndFlush(user);
+		try {
+			await em.persistAndFlush(user);
+		} catch (error) {
+			if (error.code === '23505') {
+				// dupe username error
+				return {
+					errors: [
+						{
+							field: 'username',
+							message: 'username has already been taken',
+						},
+					],
+				};
+			}
+			console.log('message: ', error.message);
+		}
 
 		return { user };
 	}
