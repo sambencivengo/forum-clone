@@ -1,7 +1,6 @@
 import { Post } from '../entities';
 import { EntityManagerTYPE } from 'src/types';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
-import e from 'express';
 
 @Resolver()
 export class PostResolver {
