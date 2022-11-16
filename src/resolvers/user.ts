@@ -1,5 +1,5 @@
 import { User } from '../entities';
-import { EntityManagerType } from 'src/types';
+import { ApolloContext } from 'src/types';
 import {
 	Arg,
 	Ctx,
@@ -41,7 +41,7 @@ export class UserResolver {
 	@Mutation(() => UserResponse)
 	async register(
 		@Arg('options') options: UsernamePasswordInput,
-		@Ctx() { em }: EntityManagerType
+		@Ctx() { em }: ApolloContext
 	): Promise<UserResponse> {
 		const { password, username } = options;
 
@@ -94,7 +94,7 @@ export class UserResolver {
 	@Mutation(() => UserResponse)
 	async login(
 		@Arg('options') options: UsernamePasswordInput,
-		@Ctx() { em }: EntityManagerType
+		@Ctx() { em }: ApolloContext
 	): Promise<UserResponse> {
 		const { password: givenPassword, username } = options;
 		const existingUser = await em.findOne(User, {

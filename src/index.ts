@@ -7,9 +7,11 @@ import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { HelloResolver, PostResolver, UserResolver } from './resolvers';
 import session from 'express-session';
-const redis = require('redis'); // WARN: TypeScript: converting to import will break types
-const RedisStore = require('connect-redis')(session); // WARN: TypeScript: converting to import will break types
+import * as redis from 'redis';
+import * as connectRedis from 'connect-redis';
+import { ApolloContext } from './types';
 
+const RedisStore = connectRedis.default(session);
 const redisClient = redis.createClient();
 
 const PORT = 8000;
@@ -22,9 +24,18 @@ const main = async () => {
 
 		app.use(
 			session({
-				store: new RedisStore({ client: redisClient }),
-				saveUninitialized: false,
-				secret: 'keyboard cat',
+				name: 'qid',
+				store: new RedisStore({
+					client: redisClient as any, // To prevent types breaking from @types/connect-redis
+					disableTouch: true,
+				}),
+				cookie: {
+					maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
+					httpOnly: true,
+					sameSite: 'lax',
+					secure: __prod__, // cookie only works in https, which localhost doesn't use
+				},
+				secret: ';kajbsdk;jabsd;kjabsd', //TODO: env variable
 				resave: false,
 			})
 		);
@@ -34,7 +45,12 @@ const main = async () => {
 				resolvers: [HelloResolver, PostResolver, UserResolver],
 				validate: false,
 			}),
-			context: () => ({ em: orm.em }), // Special object that is accessible by all of your resolvers
+			// NOTE: context is a special object that is accessible by all of your resolvers
+			context: ({ req, res }): ApolloContext => ({
+				em: orm.em,
+				req,
+				res /* adding req and res allows apollo to access sessions via resolvers */,
+			}),
 		});
 
 		await apolloServer.start();
