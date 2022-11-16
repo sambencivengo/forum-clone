@@ -23,6 +23,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "clock_timestamp()",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -33,6 +34,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "clock_timestamp()",
           "mappedType": "datetime"
         },
         "title": {
