@@ -11,7 +11,7 @@ const PORT = 8000;
 const main = async () => {
 	try {
 		const orm = await MikroORM.init(mikroOrmConfig);
-		// await orm.getMigrator().up(); // Runs the migrations before it does anything TODO: re enable if necessary when deploying, as of 221115 this is causing errors
+		await orm.getMigrator().up(); // Runs the migrations before it does anything, TODO: MIGRATIONS: if table conflicts happen on app start up, comment out and debug
 
 		const app = express();
 
