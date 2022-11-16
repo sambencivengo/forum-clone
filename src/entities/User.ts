@@ -24,12 +24,13 @@ export class User {
 
 	@Field()
 	@Property({ type: 'text', unique: true })
-	userName!: string;
+	username!: string;
 
 	@Property({ type: 'text' }) // No field property so that you cannot select it. Will be hashed
 	password!: string;
 
-	constructor(userName: string) {
-		this.userName = userName;
+	constructor(username: string, password: string) {
+		this.username = username;
+		this.password = password;
 	}
 }
