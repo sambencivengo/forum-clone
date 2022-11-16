@@ -1,14 +1,39 @@
 import { User } from '../entities';
 import { EntityManagerType } from 'src/types';
-import { Arg, Ctx, Field, InputType, Mutation, Resolver } from 'type-graphql';
+import {
+	Arg,
+	Ctx,
+	Field,
+	InputType,
+	Mutation,
+	ObjectType,
+	Resolver,
+} from 'type-graphql';
 import argon2 from 'argon2';
 // Alternative way to use @Arg decorators for arguments
-@InputType()
+@InputType() // Used for arguments
 class UsernamePasswordInput {
 	@Field()
 	username: string;
 	@Field()
 	password: string;
+}
+
+@ObjectType()
+class FieldError {
+	@Field()
+	field: string;
+	@Field()
+	message: string;
+}
+
+@ObjectType() // Used for responses
+class UserResponse {
+	@Field(() => [FieldError], { nullable: true })
+	errors?: FieldError[];
+
+	@Field(() => User, { nullable: true })
+	user?: User;
 }
 
 @Resolver()
@@ -28,5 +53,40 @@ export class UserResolver {
 		await em.persistAndFlush(user);
 
 		return user;
+	}
+
+	@Mutation(() => UserResponse)
+	async login(
+		@Arg('options') options: UsernamePasswordInput,
+		@Ctx() { em }: EntityManagerType
+	): Promise<UserResponse> {
+		const { password: givenPassword, username } = options;
+		const existingUser = await em.findOne(User, {
+			username: username.toLowerCase(),
+		});
+
+		if (!existingUser) {
+			return {
+				errors: [
+					{
+						field: 'username',
+						message: "That username doesn't exist",
+					},
+				],
+			};
+		}
+
+		const valid = await argon2.verify(existingUser.password, givenPassword); // compare hashed password against plain text password
+		if (!valid) {
+			return {
+				errors: [
+					{
+						field: 'password',
+						message: 'incorrect password',
+					},
+				],
+			};
+		}
+		return { user: existingUser };
 	}
 }
