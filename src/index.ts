@@ -22,17 +22,7 @@ const main = async () => {
 		const RedisStore = connectRedis(session);
 		const redis = new Redis();
 
-		app.set('trust proxy', process.env.NODE_ENV !== 'production');
-
-		// app.use(
-		// 	// '/graphql',
-		// 	cors<cors.CorsRequest>({
-		// 		origin: [
-		// 			'http://localhost:8000',
-		// 			'https://studio.apollographql.com',
-		// 		],
-		// 	})
-		// );
+		app.set('trust proxy', !__prod__); // NOTE: required for GraphQL studio cookies
 
 		app.use(
 			session({
@@ -44,7 +34,7 @@ const main = async () => {
 				cookie: {
 					maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
 					httpOnly: true,
-					sameSite: 'lax',
+					sameSite: 'none',
 					// secure: __prod__, // cookie only works in https, which localhost doesn't use
 					secure: true,
 				},
