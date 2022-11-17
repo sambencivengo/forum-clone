@@ -6,13 +6,10 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { HelloResolver, PostResolver, UserResolver } from './resolvers';
+import Redis from 'ioredis';
 import session from 'express-session';
-import * as redis from 'redis';
-import * as connectRedis from 'connect-redis';
+import connectRedis from 'connect-redis';
 import { ApolloContext } from './types';
-
-const RedisStore = connectRedis.default(session);
-const redisClient = redis.createClient();
 
 const PORT = 8000;
 const main = async () => {
@@ -22,11 +19,14 @@ const main = async () => {
 
 		const app = express();
 
+		const RedisStore = connectRedis(session);
+		const redis = new Redis();
+
 		app.use(
 			session({
 				name: 'qid',
 				store: new RedisStore({
-					client: redisClient as any, // To prevent types breaking from @types/connect-redis
+					client: redis as any, // To prevent types breaking from @types/connect-redis
 					disableTouch: true,
 				}),
 				cookie: {
@@ -35,6 +35,7 @@ const main = async () => {
 					sameSite: 'lax',
 					secure: __prod__, // cookie only works in https, which localhost doesn't use
 				},
+				saveUninitialized: false,
 				secret: ';kajbsdk;jabsd;kjabsd', //TODO: env variable
 				resave: false,
 			})
