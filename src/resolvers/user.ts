@@ -7,6 +7,7 @@ import {
 	InputType,
 	Mutation,
 	ObjectType,
+	Query,
 	Resolver,
 } from 'type-graphql';
 import argon2 from 'argon2';
@@ -38,6 +39,14 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+	@Query(() => User, { nullable: true })
+	async me(@Ctx() { req, em }: ApolloContext) {
+		if (!req.session.userId) return null; // not logged in
+
+		const user = await em.findOne(User, { id: req.session.userId });
+		return user;
+	}
+
 	@Mutation(() => UserResponse)
 	async register(
 		@Arg('options') options: UsernamePasswordInput,

@@ -22,6 +22,18 @@ const main = async () => {
 		const RedisStore = connectRedis(session);
 		const redis = new Redis();
 
+		app.set('trust proxy', process.env.NODE_ENV !== 'production');
+
+		// app.use(
+		// 	// '/graphql',
+		// 	cors<cors.CorsRequest>({
+		// 		origin: [
+		// 			'http://localhost:8000',
+		// 			'https://studio.apollographql.com',
+		// 		],
+		// 	})
+		// );
+
 		app.use(
 			session({
 				name: 'qid',
@@ -33,7 +45,8 @@ const main = async () => {
 					maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
 					httpOnly: true,
 					sameSite: 'lax',
-					secure: __prod__, // cookie only works in https, which localhost doesn't use
+					// secure: __prod__, // cookie only works in https, which localhost doesn't use
+					secure: true,
 				},
 				saveUninitialized: false,
 				secret: ';kajbsdk;jabsd;kjabsd', //TODO: env variable
