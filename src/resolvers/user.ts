@@ -50,7 +50,7 @@ export class UserResolver {
 	@Mutation(() => UserResponse)
 	async register(
 		@Arg('options') options: UsernamePasswordInput,
-		@Ctx() { em }: ApolloContext
+		@Ctx() { em, req }: ApolloContext
 	): Promise<UserResponse> {
 		const { password, username } = options;
 
@@ -97,6 +97,7 @@ export class UserResolver {
 			console.log('message: ', error.message);
 		}
 
+		req.session.userId = user.id;
 		return { user };
 	}
 

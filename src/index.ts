@@ -68,7 +68,7 @@ const main = async () => {
 		});
 
 		app.listen(PORT, () => {
-			console.log(`Serer started and listing on port: ${PORT}`);
+			console.log(`Server started and listing on port: ${PORT}`);
 		});
 	} catch (error) {
 		console.log(error);
