@@ -94,7 +94,7 @@ export class UserResolver {
 	@Mutation(() => UserResponse)
 	async login(
 		@Arg('options') options: UsernamePasswordInput,
-		@Ctx() { em }: ApolloContext
+		@Ctx() { em, req }: ApolloContext
 	): Promise<UserResponse> {
 		const { password: givenPassword, username } = options;
 		const existingUser = await em.findOne(User, {
@@ -123,6 +123,9 @@ export class UserResolver {
 				],
 			};
 		}
+
+		req.session.userId = existingUser.id;
+
 		return { user: existingUser };
 	}
 }
