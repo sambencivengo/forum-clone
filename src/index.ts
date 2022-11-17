@@ -55,7 +55,14 @@ const main = async () => {
 		});
 
 		await apolloServer.start();
-		apolloServer.applyMiddleware({ app });
+		apolloServer.applyMiddleware({
+			app,
+			cors: {
+				// NOTE: required for redis cookie testing in GraphQL studIo
+				credentials: true,
+				origin: 'https://studio.apollographql.com',
+			},
+		});
 
 		app.listen(PORT, () => {
 			console.log(`Serer started and listing on port: ${PORT}`);
