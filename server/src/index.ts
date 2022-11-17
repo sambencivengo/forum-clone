@@ -9,6 +9,7 @@ import { HelloResolver, PostResolver, UserResolver } from './resolvers';
 import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
+import cors from 'cors';
 import { ApolloContext } from './types';
 
 const PORT = 8000;
@@ -23,6 +24,16 @@ const main = async () => {
 		const redis = new Redis();
 
 		app.set('trust proxy', !__prod__); // NOTE: required for GraphQL studio cookies
+
+		app.use(
+			cors<cors.CorsRequest>({
+				origin: [
+					'http://localhost:3000',
+					'https://studio.apollographql.com',
+				],
+				credentials: true,
+			})
+		);
 
 		app.use(
 			session({
@@ -60,11 +71,12 @@ const main = async () => {
 		await apolloServer.start();
 		apolloServer.applyMiddleware({
 			app,
-			cors: {
-				// NOTE: required for redis cookie testing in GraphQL studIo
-				credentials: true,
-				origin: 'https://studio.apollographql.com',
-			},
+			cors: false,
+			//  {
+			// 	// NOTE: required for redis cookie testing in GraphQL studIo
+			// 	credentials: true,
+			// 	origin: 'https://studio.apollographql.com',
+			// },
 		});
 
 		app.listen(PORT, () => {
