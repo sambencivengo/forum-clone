@@ -3,7 +3,7 @@ import React from 'react';
 
 interface WrapperProps {
 	children: React.ReactElement<any, any>;
-	variant?: 'small' | 'regular';
+	variant: 'small' | 'regular';
 }
 
 export const Wrapper: React.FC<WrapperProps> = ({
