@@ -39,7 +39,7 @@ const main = async () => {
 			session({
 				name: 'qid',
 				store: new RedisStore({
-					client: redis as any, // To prevent types breaking from @types/connect-redis
+					client: redis,
 					disableTouch: true,
 				}),
 				cookie: {
