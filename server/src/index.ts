@@ -23,7 +23,7 @@ const main = async () => {
 		const RedisStore = connectRedis(session);
 		const redis = new Redis();
 
-		app.set('trust proxy', !__prod__); // NOTE: required for GraphQL studio cookies
+		app.set('trust proxy', 1); // NOTE: required for GraphQL studio cookies
 
 		app.use(
 			cors<cors.CorsRequest>({

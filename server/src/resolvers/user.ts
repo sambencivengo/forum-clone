@@ -53,7 +53,6 @@ export class UserResolver {
 		@Ctx() { em, req }: ApolloContext
 	): Promise<UserResponse> {
 		const { password, username } = options;
-
 		if (username.length <= 4) {
 			return {
 				errors: [
