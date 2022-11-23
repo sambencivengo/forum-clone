@@ -43,11 +43,11 @@ const main = async () => {
 					disableTouch: true,
 				}),
 				cookie: {
+					// NOTE: THE BELOW CONFIG IS WHAT IS WORKING WITH LOCALHOST
 					maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
 					httpOnly: true,
-					sameSite: 'none',
-					// secure: __prod__, // cookie only works in https, which localhost doesn't use
-					secure: true,
+					sameSite: 'lax', // csrf
+					secure: __prod__, // cookie only works in https
 				},
 				saveUninitialized: false,
 				secret: ';kajbsdk;jabsd;kjabsd', //TODO: env variable
