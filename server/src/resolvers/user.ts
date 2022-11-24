@@ -11,6 +11,7 @@ import {
 	Resolver,
 } from 'type-graphql';
 import argon2 from 'argon2';
+
 // Alternative way to use @Arg decorators for arguments
 @InputType() // Used for arguments
 class UsernamePasswordInput {
@@ -96,7 +97,7 @@ export class UserResolver {
 			console.log('message: ', error.message);
 		}
 
-		req.session.userId = user.id;
+		req.session.userId = user.id; // stores user id in session and sets cookie
 		return { user };
 	}
 
