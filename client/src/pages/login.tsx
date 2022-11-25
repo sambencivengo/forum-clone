@@ -36,7 +36,7 @@ const Login: React.FC<{}> = ({}) => {
 							/>
 						</Flex>
 						<Button isLoading={isSubmitting} mt={4} type="submit">
-							Register
+							Login
 						</Button>
 					</Form>
 				)}
