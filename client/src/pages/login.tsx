@@ -2,7 +2,6 @@ import React from 'react';
 import { Form, Formik } from 'formik';
 import { Flex, Button } from '@chakra-ui/react';
 import { Wrapper } from '../components/Wrapper';
-import { useMutation } from 'urql';
 import { InputField } from '../components/InputField';
 import { useLoginMutation } from '../generated/graphql';
 import { toErrorMap } from '../utils';
@@ -17,10 +16,10 @@ const Login: React.FC<{}> = ({}) => {
 				initialValues={{ username: '', password: '' }}
 				onSubmit={async (values, { setErrors }) => {
 					const response = await login({ options: values });
-					const { errors, user } = response.data.;
+					const { errors, user } = response.data.login;
 					if (errors) {
 						setErrors(toErrorMap(errors));
-					} else if (response.data.register.user) {
+					} else if (user) {
 						router.push('/');
 					}
 				}}

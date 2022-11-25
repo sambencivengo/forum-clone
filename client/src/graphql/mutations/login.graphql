@@ -1,5 +1,5 @@
 mutation Login($options: UsernamePasswordInput!) {
-	Login(options: $options) {
+	login(options: $options) {
 		user {
 			id
 			username
