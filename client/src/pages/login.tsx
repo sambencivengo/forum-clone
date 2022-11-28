@@ -27,7 +27,6 @@ const Login: React.FC<{}> = ({}) => {
 				{({ isSubmitting }) => (
 					<Form>
 						<Flex flexDirection={'column'} gap={4}>
-							{/* TODO: DRY IT UP */}
 							<InputField name="username" label="Username" />
 							<InputField
 								name="password"
